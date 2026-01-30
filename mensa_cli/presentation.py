@@ -1,12 +1,14 @@
 """Presentation helpers using Rich for terminal output."""
+
 from __future__ import annotations
 
-from typing import Iterable, Sequence
+from typing import Sequence
 
 from rich.console import Console
 from rich.table import Table
 
 from mensa_cli.models import Meal
+from mensa_cli.providers.types import MensaSite
 
 
 def create_meal_table(
@@ -45,12 +47,29 @@ def create_meal_table(
             columns.append(meal.nutrition.traffic_light or "")
 
         if show_allergens:
-            allergen_text = ", ".join(meal.allergens.codes) if meal.allergens.codes else ""
+            allergen_text = (
+                ", ".join(meal.allergens.codes) if meal.allergens.codes else ""
+            )
             columns.append(allergen_text)
 
         if show_prices:
             columns.append(_format_price(meal, price_tier))
 
+        table.add_row(*columns)
+
+    return table
+
+
+def print_list(console: Console, mensen: dict[str, MensaSite]) -> Table:
+    console.print("\n[bold blue]Available Mensas:[/]")
+
+    table = Table(show_header=True, header_style="bold green")
+    table.add_column("City")
+    table.add_column("Mensa")
+    table.add_column("URL")
+
+    for key in mensen:
+        columns = [mensen[key].city, mensen[key].name, mensen[key].url]
         table.add_row(*columns)
 
     return table

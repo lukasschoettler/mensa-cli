@@ -7,9 +7,17 @@ import typer
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-from mensa_cli import http, presentation
-from mensa_cli.providers import SITES
-from mensa_cli.providers.types import MensaSite
+if __package__ in {None, ""}:  # pragma: no cover - execution as script
+    import sys
+    from pathlib import Path
+
+    package_dir = Path(__file__).resolve().parent
+    sys.path.insert(0, str(package_dir.parent))
+    globals()["__package__"] = package_dir.name
+
+from . import http, presentation
+from .providers import SITES
+from .providers.types import MensaSite
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +43,14 @@ def configure(
     if verbose:
         logging.getLogger().setLevel(logging.DEBUG)
         logger.debug("Verbose logging enabled")
+
+
+@app.command()
+def list() -> None:
+    """List available Mensas"""
+    table = presentation.print_list(console=console, mensen=SITES)
+
+    console.print(table)
 
 
 @app.command()
