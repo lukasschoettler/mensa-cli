@@ -8,16 +8,16 @@ from mensa_cli.providers.stw_berlin import parser as stw_parser
 from mensa_cli.providers.types import MensaSite
 
 SITES: Dict[str, MensaSite] = {
-    "ash": MensaSite(
-        key="ash",
+    "ash_berlin": MensaSite(
+        key="ash_berlin",
         name="Mensa ASH Berlin",
         url="https://www.stw.berlin/mensen/einrichtungen/mensa-ash-berlin.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
     ),
-    "bht": MensaSite(
-        key="bht",
+    "bht_luxemburger_strasse": MensaSite(
+        key="bht_luxemburger_strasse",
         name="Mensa BHT Luxemburger Straße",
         url="https://www.stw.berlin/mensen/einrichtungen/berliner-hochschule-für-technik/mensa-bht.html",
         provider="stw_berlin",
@@ -51,7 +51,7 @@ SITES: Dict[str, MensaSite] = {
     "fu_i_shokudo": MensaSite(
         key="fu_i_shokudo",
         name="Mensa FU I Shokudō",
-        url="https://www.stw.berlin/mensen/einrichtungen/freie-universität-berlin/mensa-fu-i-shokudo.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/freie-universität-berlin/shokudo.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
@@ -72,8 +72,8 @@ SITES: Dict[str, MensaSite] = {
         city="Berlin",
         parser=stw_parser.parse_menu,
     ),
-    "fu_lankwitz": MensaSite(
-        key="fu_lankwitz",
+    "fu_lankwitz_malteserstraße": MensaSite(
+        key="fu_lankwitz_malteserstraße",
         name="Mensa FU Lankwitz Malteserstraße",
         url="https://www.stw.berlin/mensen/einrichtungen/freie-universität-berlin/mensa-fu-lankwitz.html",
         provider="stw_berlin",
@@ -115,7 +115,7 @@ SITES: Dict[str, MensaSite] = {
     "hu_nord": MensaSite(
         key="hu_nord",
         name="Mensa HU Nord",
-        url="https://www.stw.berlin/mensen/einrichtungen/hu/mensa-hu-nord.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/humboldt-universität-zu-berlin/mensa-hu-nord.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
@@ -123,7 +123,7 @@ SITES: Dict[str, MensaSite] = {
     "hu_oase_adlershof": MensaSite(
         key="hu_oase_adlershof",
         name="Mensa HU Oase Adlershof",
-        url="https://www.stw.berlin/mensen/einrichtungen/hu/mensa-hu-oase-adlershof.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/humboldt-universität-zu-berlin/mensa-hu-oase-adlershof.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
@@ -131,13 +131,13 @@ SITES: Dict[str, MensaSite] = {
     "hu_süd": MensaSite(
         key="hu_süd",
         name="Mensa HU Süd",
-        url="https://www.stw.berlin/mensen/einrichtungen/hu/mensa-hu-süd.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/humboldt-universität-zu-berlin/mensa-hu-süd.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
     ),
-    "hwr_badensche": MensaSite(
-        key="hwr_badensche",
+    "hwr_badensche_straße": MensaSite(
+        key="hwr_badensche_straße",
         name="Mensa HWR Badensche Straße",
         url="https://www.stw.berlin/mensen/einrichtungen/hwr/mensa-hwr-badensche-straße.html",
         provider="stw_berlin",
@@ -163,7 +163,7 @@ SITES: Dict[str, MensaSite] = {
     "tu_hardenbergstraße": MensaSite(
         key="tu_hardenbergstraße",
         name="Mensa TU Hardenbergstraße",
-        url="https://www.stw.berlin/mensen/einrichtungen/tu/mensa-tu-hardenbergstraße.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/technische-universität-berlin/mensa-tu-/udk-hardenbergstraße.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
@@ -171,7 +171,7 @@ SITES: Dict[str, MensaSite] = {
     "tu_marchstraße": MensaSite(
         key="tu_marchstraße",
         name="Mensa TU Marchstraße",
-        url="https://www.stw.berlin/mensen/einrichtungen/tu/mensa-tu-marchstraße.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/technische-universität-berlin/mensa-tu-marchstraße.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
@@ -179,15 +179,7 @@ SITES: Dict[str, MensaSite] = {
     "tu_veggie2_0": MensaSite(
         key="tu_veggie2_0",
         name="Mensa TU Veggie 2.0",
-        url="https://www.stw.berlin/mensen/einrichtungen/tu/mensa-tu-veggie-2.0.html",
-        provider="stw_berlin",
-        city="Berlin",
-        parser=stw_parser.parse_menu,
-    ),
-    "fu_shokudo": MensaSite(
-        key="fu_shokudo",
-        name="Mensa FU I Shokudō",  # same as fu_i_shokudo but included if alternate
-        url="https://www.stw.berlin/mensen/einrichtungen/fu/mensa-fu-i-shokudo.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/technische-universität-berlin/veggie2.0.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
