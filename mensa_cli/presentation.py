@@ -65,11 +65,12 @@ def print_list(console: Console, mensen: dict[str, MensaSite]) -> Table:
 
     table = Table(show_header=True, header_style="bold green")
     table.add_column("City")
+    table.add_column("ID")
     table.add_column("Mensa")
     table.add_column("URL")
 
     for key in mensen:
-        columns = [mensen[key].city, mensen[key].name, mensen[key].url]
+        columns = [mensen[key].city, mensen[key].key, mensen[key].name, mensen[key].url]
         table.add_row(*columns)
 
     return table
