@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup, Tag
 
 from mensa_cli.models import AllergenInfo, DietaryInfo, Meal, NutritionInfo, Pricing
 from mensa_cli.providers.stw_berlin import constants
+from mensa_cli.providers.types import ParseResult
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +159,7 @@ def _parse_meal(meal_element: Tag) -> Optional[Meal]:
     )
 
 
-def parse_menu(html: str) -> List[Meal]:
+def parse_menu(html: str) -> ParseResult:
     soup = BeautifulSoup(html, "html.parser")
 
     speiseplan = soup.find("div", id="speiseplan")
@@ -183,4 +184,4 @@ def parse_menu(html: str) -> List[Meal]:
                 meal.category = category
                 meals.append(meal)
 
-    return meals
+    return ParseResult(meals=meals)

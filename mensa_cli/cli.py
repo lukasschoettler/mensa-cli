@@ -99,10 +99,17 @@ def scrape(
         progress.update(task, description="Menu fetched successfully!")
 
     console.print("[blue]Parsing menu...[/]")
-    meals = site.parser(html)
+    parse_result = site.parser(html)
+    meals = parse_result.meals
+
     if not meals:
         console.print("[yellow]No dishes found — maybe the structure differs?[/]")
         return
+
+    if parse_result.warnings:
+        console.print("[yellow]Warnings during parsing:[/]")
+        for warning in parse_result.warnings:
+            console.print(f"  • {warning}")
 
     console.print(f"[green]Successfully parsed {len(meals)} meals![/]")
 
