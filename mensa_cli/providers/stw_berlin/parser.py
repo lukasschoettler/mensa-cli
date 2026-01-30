@@ -1,4 +1,5 @@
 """Parser implementation for STW Berlin-based Mensa sites."""
+
 from __future__ import annotations
 
 import logging
@@ -11,8 +12,6 @@ from mensa_cli.models import AllergenInfo, DietaryInfo, Meal, NutritionInfo, Pri
 from mensa_cli.providers.stw_berlin import constants
 
 logger = logging.getLogger(__name__)
-
-_GetTextDefault = str
 
 
 def _get_text(element: Optional[Tag], default: str = "") -> str:
@@ -85,7 +84,9 @@ def _parse_allergen_codes(allergen_string: str) -> AllergenInfo:
         elif info["type"] == "allergen":
             allergens.append(info["name"])
 
-    return AllergenInfo(codes=codes, readable=readable, additives=additives, allergens=allergens)
+    return AllergenInfo(
+        codes=codes, readable=readable, additives=additives, allergens=allergens
+    )
 
 
 def _parse_icons(meal_element: Tag) -> Tuple[NutritionInfo, DietaryInfo]:
@@ -121,7 +122,9 @@ def _parse_icons(meal_element: Tag) -> Tuple[NutritionInfo, DietaryInfo]:
                 is_vegan = True
                 is_vegetarian = True
 
-    dietary = DietaryInfo(labels=dietary_labels, vegetarian=is_vegetarian, vegan=is_vegan)
+    dietary = DietaryInfo(
+        labels=dietary_labels, vegetarian=is_vegetarian, vegan=is_vegan
+    )
     return nutrition, dietary
 
 

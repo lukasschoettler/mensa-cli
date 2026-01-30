@@ -1,4 +1,5 @@
 """Registry types for Mensa providers."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
