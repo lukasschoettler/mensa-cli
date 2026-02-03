@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict
 
-from mensa_cli.providers.stw_berlin import parser as stw_parser
-from mensa_cli.providers.types import MensaSite
+from mensa.providers.stw_berlin import parser as stw_parser
+from mensa.providers.types import MensaSite
 
 SITES: Dict[str, MensaSite] = {
     "ash_berlin": MensaSite(

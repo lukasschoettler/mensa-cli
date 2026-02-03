@@ -7,8 +7,8 @@ from typing import Sequence
 from rich.console import Console
 from rich.table import Table
 
-from mensa_cli.models import Meal
-from mensa_cli.providers.types import MensaSite
+from mensa.models import Meal
+from mensa.providers.types import MensaSite
 
 
 def create_meal_table(

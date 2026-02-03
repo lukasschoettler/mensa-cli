@@ -56,7 +56,7 @@ def list() -> None:
 @app.command()
 def scrape(
     mensa: str = typer.Option(
-        "hu_sued",
+        "hu_süd",  # Default behaviour should be configurable/less opiniated
         "--mensa",
         "-m",
         help="Key of the mensa to scrape",

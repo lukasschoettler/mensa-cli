@@ -1,22 +1,26 @@
 [build-system]
-requires = ["setuptools>=69.0"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "mensa"
-version = "0.1.0"
-description = "CLI to fetch and display Studierendenwerk Berlin canteen menus"
+version = "0.0.2"
+description = "CLI to fetch and display mensa menus"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "beautifulsoup4>=4.12",
-    "requests>=2.31",
-    "rich>=13.7",
-    "typer>=0.12",
+    "beautifulsoup4",
+    "requests",
+    "rich",
+    "typer",
 ]
 
 [project.scripts]
-mensa = "mensa_cli.__main__:main"
+mensa = "mensa.cli:app"  # or mensa.cli:app
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
