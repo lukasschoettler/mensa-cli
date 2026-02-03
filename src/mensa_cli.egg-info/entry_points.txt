@@ -1,2 +1,0 @@
-[console_scripts]
-mensa-cli = mensa_cli.__main__:main
