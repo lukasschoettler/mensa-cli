@@ -7,13 +7,13 @@ import typer
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-if __package__ in {None, ""}:  # pragma: no cover - execution as script
-    import sys
-    from pathlib import Path
-
-    package_dir = Path(__file__).resolve().parent
-    sys.path.insert(0, str(package_dir.parent))
-    globals()["__package__"] = package_dir.name
+# if __package__ in {None, ""}:  # pragma: no cover - execution as script
+#     import sys
+#     from pathlib import Path
+#
+#     package_dir = Path(__file__).resolve().parent
+#     sys.path.insert(0, str(package_dir.parent))
+#     globals()["__package__"] = package_dir.name
 
 from . import http, presentation
 from .providers import SITES
