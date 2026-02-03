@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: mensa-cli
+Version: 0.1.0
+Summary: CLI to fetch and display Studierendenwerk Berlin canteen menus
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: beautifulsoup4>=4.12
+Requires-Dist: requests>=2.31
+Requires-Dist: rich>=13.7
+Requires-Dist: typer>=0.12
+
+A CLI tool which scrapes today's menu of your Mensa. Currently supports Mensas which are part of the "Studierendenwerk Berlin".
+
+## Installation
+
+Install directly from source using the project metadata defined in `pyproject.toml`:
+
+```bash
+pip install -e .
+```
+
+This installs the `mensa-cli` console entry point.
