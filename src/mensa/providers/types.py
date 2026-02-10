@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Iterable, List, Optional, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, List, Optional, Protocol, runtime_checkable
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from mensa.models import Meal
@@ -13,7 +13,7 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
 class ParseResult:
     """Structured response returned by a parser implementation."""
 
-    meals: List["Meal"]
+    meals: List[Meal]
     menu_date: Optional[str] = None
     source_url: Optional[str] = None
     warnings: List[str] = field(default_factory=list)
@@ -46,5 +46,5 @@ class MensaSite:
     name: str
     url: str
     provider: str
-    city: Optional[str]
+    city: str
     parser: Parser
