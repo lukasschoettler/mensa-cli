@@ -16,11 +16,10 @@ dependencies = [
 ]
 
 [project.scripts]
-mensa = "mensa.cli:app"
+mensa = "cli.cli:app"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

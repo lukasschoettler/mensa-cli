@@ -8,9 +8,9 @@ from typing import List, Optional, Tuple
 
 from bs4 import BeautifulSoup, Tag
 
-from mensa.models import AllergenInfo, DietaryInfo, Meal, NutritionInfo, Pricing
-from mensa.providers.stw_berlin import constants
-from mensa.providers.types import ParseResult
+from cli.modelstest import AllergenInfo, DietaryInfo, Meal, NutritionInfo, Pricing
+from cli.providers.stw_berlin import constants
+from cli.providers.types import ParseResult
 
 logger = logging.getLogger(__name__)
 
