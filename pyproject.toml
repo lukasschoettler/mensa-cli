@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mensa = "mensa.cli:app"  # or mensa.cli:app
+mensa = "mensa.cli:app"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
