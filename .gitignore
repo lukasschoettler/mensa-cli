@@ -1,4 +1,5 @@
 .DS_Store
+
 # Python
 __pycache__/
 *.pyc
@@ -6,9 +7,11 @@ __pycache__/
 *.pyd
 .Python
 *.so
+*.egg-info
 
 # Environment
 .env
 env/
 
-*.egg-info
+# Data
+/db/*
