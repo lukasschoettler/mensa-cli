@@ -44,5 +44,6 @@ As of now, there's nothing functional here.
 # In this repo
 docker build . -t mensa-data
 
-docker run mensa-data
+# This mounts the empty "db" directory into the container, which is used for the sqlite3 database. This way the database can be inspected outside of the container
+docker run --mount type=bind,src=./db,dst=/app/db mensa-data
 ```
