@@ -34,4 +34,4 @@ show_schema()
 connection.commit()
 
 
-# print(result)
+print("ciao docker")

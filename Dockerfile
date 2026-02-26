@@ -3,8 +3,8 @@ FROM python:3.13.12-bookworm
 
 WORKDIR /app
 
-COPY /src/data /app
-COPY /src/common /app
+COPY ./src/data /app
+COPY ./src/common /app
 
 RUN ["mkdir", "db"]
 
