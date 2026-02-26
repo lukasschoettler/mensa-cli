@@ -163,7 +163,7 @@ SITES: Dict[str, MensaSite] = {
     "tu_hardenbergstraße": MensaSite(
         key="tu_hardenbergstraße",
         name="Mensa TU Hardenbergstraße",
-        url="https://www.stw.berlin/mensen/einrichtungen/technische-universität-berlin/mensa-tu-/udk-hardenbergstraße.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/technische-universität-berlin/mensa-tu-hardenbergstraße.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
