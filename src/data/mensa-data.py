@@ -2,7 +2,9 @@ import sqlite3
 
 print("hello docker")
 
-db = sqlite3.connect("db/mensa.db")
+connection = sqlite3.connect("db/mensa.db")
+
+db = connection.cursor()
 
 db.execute("""/*SQL*/
 CREATE TABLE IF NOT EXISTS menus_raw (
@@ -14,12 +16,22 @@ CREATE TABLE IF NOT EXISTS menus_raw (
 );
 """)
 
-result = db.execute("""/*SQL*/
+
+def show_schema():
+    result = db.execute("""/*SQL*/
 SELECT
   *
 FROM
-  menus_raw;
-""")
+  sqlite_schema;
+                        """)
+
+    schema = result.fetchall()
+    print(f"SCHEMA: {schema}")
 
 
-print(result)
+show_schema()
+
+connection.commit()
+
+
+# print(result)

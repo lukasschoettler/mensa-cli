@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, List, Optional, Protocol, runtime_checkable
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
-    from cli.modelstest import Meal
+    from common.models import Meal
 
 
 @dataclass(slots=True)
@@ -19,7 +19,7 @@ class ParseResult:
     warnings: List[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        from cli.modelstest import Meal
+        from common.models import Meal
 
         if not isinstance(self.meals, list):
             object.__setattr__(self, "meals", list(self.meals))
