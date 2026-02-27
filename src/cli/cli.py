@@ -8,10 +8,10 @@ import typer
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
+from cli import presentation
+from common import http
 from common.providers import SITES
 from common.providers.types import MensaSite
-
-from . import http, presentation
 
 # if __package__ in {None, ""}:  # pragma: no cover - execution as script
 #     import sys

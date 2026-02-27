@@ -1,13 +1,17 @@
-FROM python:3.13.12-bookworm
+FROM python:3.13.12-slim-bookworm
 # AS builder
 
-WORKDIR /app
+WORKDIR /src
 
-COPY ./src/data /app
-COPY ./src/common /app
+COPY ./src/common common
+COPY ./src/data data
 
+RUN ["pip", "install", "requests==2.32.5"]
+RUN ["pip", "install", "beautifulsoup4==4.14.3"]
 RUN ["mkdir", "db"]
 
-ENTRYPOINT ["python", "mensa-data.py"]
+ENV PYTHONPATH="/src"
+
+ENTRYPOINT ["python", "data/mensa-data.py"]
 
 # FROM python:3.13.12-slim-bookworm AS prod
