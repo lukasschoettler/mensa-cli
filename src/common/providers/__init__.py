@@ -27,7 +27,7 @@ SITES: Dict[str, MensaSite] = {
     "charite_zahnklinik": MensaSite(
         key="charite_zahnklinik",
         name="Mensa Charité Zahnklinik",
-        url="https://www.stw.berlin/mensen/einrichtungen/charité/mensa-charité-zahnklinik.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/charité/mensa-charite-zahnklinik.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
