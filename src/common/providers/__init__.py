@@ -35,7 +35,7 @@ SITES: Dict[str, MensaSite] = {
     "ehb_teltower_damm": MensaSite(
         key="ehb_teltower_damm",
         name="Mensa EHB Teltower Damm",
-        url="https://www.stw.berlin/mensen/einrichtungen/ehb/mensa-ehb-teltower-damm.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/ehb/mensa-evang.-hs-berlin-teltower-damm.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
@@ -75,7 +75,7 @@ SITES: Dict[str, MensaSite] = {
     "fu_lankwitz_malteserstraße": MensaSite(
         key="fu_lankwitz_malteserstraße",
         name="Mensa FU Lankwitz Malteserstraße",
-        url="https://www.stw.berlin/mensen/einrichtungen/freie-universität-berlin/mensa-fu-lankwitz.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/freie-universität-berlin/mensa-fu-lankwitz-malteserstraße.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
@@ -139,7 +139,7 @@ SITES: Dict[str, MensaSite] = {
     "hwr_badensche_straße": MensaSite(
         key="hwr_badensche_straße",
         name="Mensa HWR Badensche Straße",
-        url="https://www.stw.berlin/mensen/einrichtungen/hwr/mensa-hwr-badensche-straße.html",
+        url="https://www.stw.berlin/mensen/einrichtungen/hochschule-für-wirtschaft-und-recht-berlin/mensa-hwr-badensche-straße.html",
         provider="stw_berlin",
         city="Berlin",
         parser=stw_parser.parse_menu,
