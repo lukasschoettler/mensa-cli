@@ -1,4 +1,5 @@
 """HTTP utilities for fetching Mensa pages."""
+
 from __future__ import annotations
 
 import logging
@@ -29,18 +30,31 @@ def normalize_url(url: str) -> str:
     return urlunsplit((parts.scheme, parts.netloc, path, query, parts.fragment))
 
 
+def test_connection(
+    timeout: int,
+    headers: Optional[Mapping[str, str]] = DEFAULT_HEADERS,
+    test_url: str = "https://google.com",
+) -> None:
+    try:
+        requests.head(test_url, timeout=timeout, headers=headers)
+        logger.debug(f"Connection Test: Succesfully reached {test_url}")
+    except Exception as e:
+        logger.exception(f"Connection Test failed: {e}")
+    return None
+
+
 def fetch_html(
     url: str,
     *,
-    session: Optional[requests.Session] = None,
-    headers: Optional[Mapping[str, str]] = None,
+    headers: Optional[Mapping[str, str]] = DEFAULT_HEADERS,
     timeout: int = 10,
 ) -> str:
     """Fetch HTML content from the given URL using provided session/settings."""
     normalized = normalize_url(url)
-    client = session or requests
+
+    test_connection(timeout, headers)
 
     logger.debug("Fetching URL %s", normalized)
-    response = client.get(normalized, timeout=timeout, headers=headers or DEFAULT_HEADERS)
+    response = requests.get(normalized, timeout=timeout, headers=headers)
     response.raise_for_status()
     return response.text
