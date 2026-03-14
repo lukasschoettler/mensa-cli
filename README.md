@@ -42,10 +42,10 @@ As of now, there's nothing functional here.
 
 ```bash
 # In this repo
-docker build . -t --target prod mensa-data
+docker build . --no-cache --target prod -t mensa-data
 
 # The debug build target comes with shell utilities to make debugging simpler.
-docker build . -t --target debug mensa-data-debug
+docker build . --no-cache --target debug -t mensa-data-debug
 
 # This mounts the empty "db" directory into the container, which is used for the sqlite3 database. This way the database can be inspected outside of the container
 docker run --mount type=bind,src=./db,dst=/src/db mensa-data
