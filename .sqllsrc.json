@@ -1,0 +1,5 @@
+{
+  "name": "mensa-data",
+  "adapter": "sqlite3",
+  "filename": "/db/mensa.db",
+}
