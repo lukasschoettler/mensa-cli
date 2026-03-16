@@ -3,10 +3,10 @@ from uuid import uuid4
 
 from common.http import fetch_html
 from common.providers.__init__ import SITES
+from data.queries import insert_fetches
 
 
-def dbwrite_raw_html(database: sqlite3.Cursor) -> None:
-    assert SITES.__len__() > 0
+def ingest_fetches(cursor: sqlite3.Cursor) -> None:
 
     for key, site in SITES.items():
         try:
@@ -27,23 +27,10 @@ def dbwrite_raw_html(database: sqlite3.Cursor) -> None:
             print(f"Couldn't fetch html for {mensa_key} at {url}")
             continue
 
-        fetch_id = str(uuid4())
+        fetch_id = uuid4()
 
         try:
-            database.execute(
-                """/*SQL*/
-INSERT INTO
-  raw_html (html, date, url, mensa_key, fetch_id)
-VALUES
-  (?, datetime ("now"), ?, ?, ?)
-                   """,
-                (
-                    html,
-                    url,
-                    mensa_key,
-                    fetch_id,
-                ),
-            )
+            insert_fetches(cursor, html, url, mensa_key, fetch_id)
             print(f"Saved raw html for {mensa_key} to database")
         except Exception as e:
             print(f"Failed to insert raw html into database: {e}")
