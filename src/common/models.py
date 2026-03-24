@@ -1,10 +1,14 @@
 """
 Core domain models shared across scrapers and presentation layers.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional
+from datetime import datetime
+from typing import List, Optional, Set
+
+# from common.providers import SITES
 
 
 @dataclass(slots=True)
@@ -55,3 +59,66 @@ class Meal:
     nutrition: NutritionInfo
     dietary: DietaryInfo
     allergens: AllergenInfo
+
+
+# VALID_KEYS: Set[str] = {site.key for site in SITES.values()}
+
+
+@dataclass
+class BaseRead:
+    id: int
+    timestamp: datetime
+
+    def __post_init__(self):
+        if isinstance(self.timestamp, str):
+            self.timestamp = datetime.fromisoformat(self.timestamp)
+
+
+@dataclass
+class MensaCreate:
+    key: str
+    name: str
+    provider: str
+    url: str
+    city: str
+
+    # def __post_init__(self):
+    #     assert self.key in VALID_KEYS
+
+
+@dataclass
+class FetchCreate:
+    html: str
+    url: str
+    mensa_key: str
+
+
+@dataclass
+class FetchRead(BaseRead):
+    html: str
+    url: str
+    mensa_key: str
+
+
+@dataclass
+class MenuCreate:
+    fetch_id: int
+    mensa_key: str
+
+
+@dataclass
+class MenuRead(BaseRead):
+    fetch_id: int
+    mensa_key: str
+
+
+@dataclass
+class MealCreate:
+    name: str
+    mensa_key: str
+
+
+@dataclass
+class MealRead(BaseRead):
+    name: str
+    mensa_key: str

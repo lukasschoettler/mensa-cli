@@ -9,6 +9,7 @@ ENV PYTHONPATH="/src"
 WORKDIR /src
 COPY ./src/common common
 COPY ./src/data data
+COPY .env .env
 
 
 FROM builder AS debug
@@ -28,8 +29,11 @@ ENTRYPOINT ["/bin/sh"]
 
 FROM builder AS prod
 
+RUN ["pip", "install", "python-dotenv"]
+
 RUN useradd --create-home --shell /bin/bash appuser
 
 USER appuser
+
 
 ENTRYPOINT ["python", "data/main.py"]

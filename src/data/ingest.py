@@ -1,36 +1,40 @@
 import sqlite3
-from uuid import uuid4
 
 from common.http import fetch_html
+from common.logger import log
+from common.models import FetchCreate
 from common.providers.__init__ import SITES
-from data.queries import insert_fetch
+from data.queries import FetchRepository
 
 
-def ingest_fetches(cursor: sqlite3.Cursor) -> None:
+def ingest_fetches(connection: sqlite3.Connection) -> None:
+
+    fetch_repo = FetchRepository(connection)
 
     for key, site in SITES.items():
         try:
             mensa_key = site.key
         except:
-            print(f"Couldn't extract key from SITES for key: {key} with site: {site}")
+            log.info(
+                f"Couldn't extract key from SITES for key: {key} with site: {site}"
+            )
             continue
 
         try:
             url = site.url
         except:
-            print(f"Couldn't extract URL from SITES for {mensa_key}")
+            log.info(f"Couldn't extract URL from SITES for {mensa_key}")
             continue
 
         try:
             html = fetch_html(url)
         except:
-            print(f"Couldn't fetch html for {mensa_key} at {url}")
+            log.info(f"Couldn't fetch html for {mensa_key} at {url}")
             continue
 
-        fetch_id = str(uuid4())
+        fetch = FetchCreate(html, url, mensa_key)
 
         try:
-            insert_fetch(cursor, html, url, mensa_key, fetch_id)
-            print(f"Saved raw html for {mensa_key} to database")
+            fetch_repo.insert(fetch)
         except Exception as e:
-            print(f"Failed to insert raw html into database: {e}")
+            log.info(f"Failed to insert raw html into database: {e}")

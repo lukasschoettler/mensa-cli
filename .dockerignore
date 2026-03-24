@@ -16,8 +16,5 @@
 **/*.md
 **/*.txt
 
-# Environment
-**/*.env
-
 # Data
 db

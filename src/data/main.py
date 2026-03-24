@@ -1,17 +1,17 @@
 import sqlite3
 
+from common.logger import log
+from common.models import MensaCreate
 from common.providers.__init__ import SITES
 from data.ingest import ingest_fetches
-from data.parse import process_fetch
+from data.processing import FetchProcessor
 from data.queries import (
-    ensure_table_fetches,
-    ensure_table_meals,
-    ensure_table_mensas,
-    ensure_table_menus,
-    ensure_table_menus_meals,
-    get_fetches_unparsed,
-    update_mensas,
+    FetchRepository,
+    MealRepository,
+    MensaRepository,
+    MenuRepository,
 )
+from data.schema import DatabaseSchema
 
 try:
     connection = sqlite3.connect("db/mensa.db")
@@ -19,72 +19,66 @@ except Exception as e:
     e.add_note("Hint: Is the database mounted correctly?")
     raise e
 
-
-def ensure_wal_mode(conn: sqlite3.Connection) -> None:
-    cur = conn.execute("""/*SQL*/ PRAGMA journal_mode = WAL
-                       """)
-    mode = cur.fetchone()[0]
-
-    if mode.lower() != "wal":
-        raise RuntimeError(f"Failed to enable WAL mode, got {mode}")
-
-
-ensure_wal_mode(connection)
-
-cursor = connection.cursor()
-
-# def validate_sites(SITES) -> None:
-
-ensure_table_mensas(cursor)
-
 assert SITES.__len__() > 0
+connection.row_factory = sqlite3.Row
+setup = DatabaseSchema(connection)
+setup.ensure_all()
+
+mensas = MensaRepository(connection)
 for key, site in SITES.items():
     try:
         key = site.key
     except:
-        print(f"Couldn't extract key from SITES for key: {key} with site: {site}")
+        log.info(f"Couldn't extract key from SITES for key: {key} with site: {site}")
         continue
 
     try:
         url = site.url
     except:
-        print(f"Couldn't extract URL from SITES for {key}")
+        log.info(f"Couldn't extract URL from SITES for {key}")
         continue
 
     try:
         name = site.name
     except:
-        print(f"Couldn't extract name from SITES for {key}")
+        log.info(f"Couldn't extract name from SITES for {key}")
         continue
 
     try:
         provider = site.provider
     except:
-        print(f"Couldn't extract provider from SITES for {key}")
+        log.info(f"Couldn't extract provider from SITES for {key}")
         continue
 
     try:
         city = site.city
     except:
-        print(f"Couldn't extract city from SITES for {key}")
+        log.info(f"Couldn't extract city from SITES for {key}")
         continue
 
-    update_mensas(cursor, key, name, provider, url, city)
-    print(f"Upserted data for mensa: {key}")
+    mensas.upsert(mensa=MensaCreate(key, name, provider, url, city))
 
-ensure_table_fetches(cursor)
-ingest_fetches(cursor)
+ingest_fetches(connection)
 
-ensure_table_menus(cursor)
-ensure_table_meals(cursor)
-ensure_table_menus_meals(cursor)
-fetches = get_fetches_unparsed(cursor)
+fetch_repo = FetchRepository(connection)
+
+fetches = fetch_repo.select_unparsed()
+
+fetch_processor = FetchProcessor(fetches)
+
+results = fetch_processor.process_all()
 
 if not fetches:
-    print("No unprocessed fetches in database found")
+    log.info("No unprocessed fetches in database found")
 else:
-    print(f"{fetches.__len__()} unprocessed fetches found. Initializing proessing.")
-    for fetch in fetches:
-        process_fetch(cursor, SITES, fetch)
+    for result in results:
+        with connection as conn:
+            menu_repo = MenuRepository(conn)
+            meal_repo = MealRepository(conn)
+
+            menu_after = menu_repo.insert(result[0])
+            for meal in result[1]:
+                meal_after = meal_repo.upsert(meal)
+                menu_repo.insert_meal_junction(menu_after.id, meal_after.id)
 
 connection.commit()
