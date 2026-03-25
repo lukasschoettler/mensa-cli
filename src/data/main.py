@@ -28,32 +28,34 @@ mensas = MensaRepository(connection)
 for key, site in SITES.items():
     try:
         key = site.key
-    except:
-        log.info(f"Couldn't extract key from SITES for key: {key} with site: {site}")
+    except Exception as e:
+        log.info(
+            f"Couldn't extract key from SITES for key: {key} with site: {site}. {e}"
+        )
         continue
 
     try:
         url = site.url
-    except:
-        log.info(f"Couldn't extract URL from SITES for {key}")
+    except Exception as e:
+        log.info(f"Couldn't extract URL from SITES for {key}. {e}")
         continue
 
     try:
         name = site.name
-    except:
-        log.info(f"Couldn't extract name from SITES for {key}")
+    except Exception as e:
+        log.info(f"Couldn't extract name from SITES for {key}. {e}")
         continue
 
     try:
         provider = site.provider
-    except:
-        log.info(f"Couldn't extract provider from SITES for {key}")
+    except Exception as e:
+        log.info(f"Couldn't extract provider from SITES for {key}. {e}")
         continue
 
     try:
         city = site.city
-    except:
-        log.info(f"Couldn't extract city from SITES for {key}")
+    except Exception as e:
+        log.info(f"Couldn't extract city from SITES for {key}. {e}")
         continue
 
     mensas.upsert(mensa=MensaCreate(key, name, provider, url, city))

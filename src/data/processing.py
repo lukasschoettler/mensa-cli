@@ -5,15 +5,6 @@ from common.models import FetchRead, MealCreate, MenuCreate
 from common.providers import SITES
 from common.providers.types import MensaSite, ParseResult
 
-# from common.http import fetch_html
-# from common.providers.__init__ import SITES
-# from data.queries import (
-#     FetchRepository,
-#     MealRepository,
-#     MensaRepository,
-#     MenuRepository,
-# )
-
 
 class StructuredFetch(TypedDict):
     id: str
