@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Dict
-
 from common.providers.stw_berlin import parser as stw_parser
-from common.providers.types import MensaSite
+from common.providers.types import MensaRegistry, MensaSite
 
-SITES: Dict[str, MensaSite] = {
+MENSAS = MensaRegistry({
     "ash_berlin": MensaSite(
         key="ash_berlin",
         name="Mensa ASH Berlin",
@@ -184,4 +182,4 @@ SITES: Dict[str, MensaSite] = {
         city="Berlin",
         parser=stw_parser.parse_menu,
     ),
-}
+})

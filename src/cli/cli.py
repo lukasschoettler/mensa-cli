@@ -10,8 +10,8 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from cli import presentation
 from common import http
-from common.providers import SITES
-from common.providers.types import MensaSite
+from common.providers import MENSAS
+from common.providers.types import MensaRegistry, MensaSite
 
 # if __package__ in {None, ""}:  # pragma: no cover - execution as script
 #     import sys
@@ -51,7 +51,7 @@ def configure(
 @app.command()
 def list() -> None:
     """List available Mensas"""
-    table = presentation.print_list(console=console, mensen=SITES)
+    table = presentation.print_list(console=console, mensen=MENSAS)
 
     console.print(table)
 
@@ -131,10 +131,10 @@ def scrape(
 
 
 def _resolve_site(key: str) -> MensaSite:
-    try:
-        return SITES[key]
-    except KeyError as exc:
-        available = ", ".join(sorted(SITES))
+    site = MENSAS.get(key)
+    if site is None:
+        available = ", ".join(sorted(MENSAS.keys()))
         raise typer.BadParameter(
             f"Unknown mensa '{key}'. Available: {available}"
-        ) from exc
+        )
+    return site

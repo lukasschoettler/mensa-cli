@@ -2,7 +2,7 @@ import sqlite3
 
 from common.logger import log
 from common.models import MensaCreate
-from common.providers.__init__ import SITES
+from common.providers import MENSAS
 from data.ingest import ingest_fetches
 from data.processing import FetchProcessor
 from data.queries import (
@@ -19,46 +19,22 @@ except Exception as e:
     e.add_note("Hint: Is the database mounted correctly?")
     raise e
 
-assert SITES.__len__() > 0
+assert len(MENSAS) > 0
 connection.row_factory = sqlite3.Row
-setup = DatabaseSchema(connection)
-setup.ensure_all()
+schema = DatabaseSchema(connection)
+schema.ensure_all()
 
-mensas = MensaRepository(connection)
-for key, site in SITES.items():
-    try:
-        key = site.key
-    except Exception as e:
-        log.info(
-            f"Couldn't extract key from SITES for key: {key} with site: {site}. {e}"
+mensa_repo = MensaRepository(connection)
+for key, site in MENSAS:
+    mensa_repo.upsert(
+        mensa=MensaCreate(
+            key=site.key,
+            name=site.name,
+            provider=site.provider,
+            url=site.url,
+            city=site.city,
         )
-        continue
-
-    try:
-        url = site.url
-    except Exception as e:
-        log.info(f"Couldn't extract URL from SITES for {key}. {e}")
-        continue
-
-    try:
-        name = site.name
-    except Exception as e:
-        log.info(f"Couldn't extract name from SITES for {key}. {e}")
-        continue
-
-    try:
-        provider = site.provider
-    except Exception as e:
-        log.info(f"Couldn't extract provider from SITES for {key}. {e}")
-        continue
-
-    try:
-        city = site.city
-    except Exception as e:
-        log.info(f"Couldn't extract city from SITES for {key}. {e}")
-        continue
-
-    mensas.upsert(mensa=MensaCreate(key, name, provider, url, city))
+    )
 
 ingest_fetches(connection)
 

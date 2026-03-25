@@ -3,36 +3,21 @@ import sqlite3
 from common.http import fetch_html
 from common.logger import log
 from common.models import FetchCreate
-from common.providers.__init__ import SITES
+from common.providers import MENSAS
 from data.queries import FetchRepository
 
 
 def ingest_fetches(connection: sqlite3.Connection) -> None:
-
     fetch_repo = FetchRepository(connection)
 
-    for key, site in SITES.items():
+    for key, site in MENSAS:
         try:
-            mensa_key = site.key
-        except:
-            log.info(
-                f"Couldn't extract key from SITES for key: {key} with site: {site}"
-            )
+            html = fetch_html(site.url)
+        except Exception as e:
+            log.info(f"Couldn't fetch html for {site.key} at {site.url}: {e}")
             continue
 
-        try:
-            url = site.url
-        except:
-            log.info(f"Couldn't extract URL from SITES for {mensa_key}")
-            continue
-
-        try:
-            html = fetch_html(url)
-        except:
-            log.info(f"Couldn't fetch html for {mensa_key} at {url}")
-            continue
-
-        fetch = FetchCreate(html, url, mensa_key)
+        fetch = FetchCreate(html, site.url, site.key)
 
         try:
             fetch_repo.insert(fetch)

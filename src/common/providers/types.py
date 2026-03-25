@@ -3,7 +3,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, List, Optional, Protocol, runtime_checkable
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    ItemsView,
+    Iterator,
+    KeysView,
+    List,
+    Optional,
+    Protocol,
+    ValuesView,
+    runtime_checkable,
+)
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
     from common.models import Meal
@@ -48,3 +59,34 @@ class MensaSite:
     provider: str
     city: str
     parser: Parser
+
+
+@dataclass(frozen=True, slots=True)
+class MensaRegistry:
+    """Immutable registry of Mensa sites."""
+
+    _sites: Dict[str, MensaSite]
+
+    def __iter__(self) -> Iterator[tuple[str, MensaSite]]:
+        return iter(self._sites.items())
+
+    def __getitem__(self, key: str) -> MensaSite:
+        return self._sites[key]
+
+    def __len__(self) -> int:
+        return len(self._sites)
+
+    def __contains__(self, key: str) -> bool:
+        return key in self._sites
+
+    def get(self, key: str, default: Optional[MensaSite] = None) -> Optional[MensaSite]:
+        return self._sites.get(key, default)
+
+    def keys(self) -> KeysView[str]:
+        return self._sites.keys()
+
+    def values(self) -> ValuesView[MensaSite]:
+        return self._sites.values()
+
+    def items(self) -> ItemsView[str, MensaSite]:
+        return self._sites.items()

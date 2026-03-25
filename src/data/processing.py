@@ -1,9 +1,9 @@
-from typing import Dict, List, Tuple, TypedDict
+from typing import List, Tuple, TypedDict
 
 from common.logger import log
 from common.models import FetchRead, MealCreate, MenuCreate
-from common.providers import SITES
-from common.providers.types import MensaSite, ParseResult
+from common.providers import MENSAS
+from common.providers.types import MensaRegistry, MensaSite, ParseResult
 
 
 class StructuredFetch(TypedDict):
@@ -26,18 +26,16 @@ def make_fetch_structured(fetch: Tuple[str, str, str, str, str]) -> StructuredFe
     return structured_fetch
 
 
-def parse_menu(sites: Dict[str, MensaSite], fetch: FetchRead) -> ParseResult:
-
+def parse_menu(sites: MensaRegistry, fetch: FetchRead) -> ParseResult:
     site = sites[fetch.mensa_key]
     parser = site.parser
-
     menu = parser(fetch.html)
     return menu
 
 
 class MealProcessor:
-    def __init__(self, sites=SITES):
-        self.sites = sites
+    def __init__(self, sites: MensaRegistry | None = None):
+        self.sites = sites if sites is not None else MENSAS
 
     def process(self, fetch: FetchRead) -> List[MealCreate]:
         meal_list = []
@@ -51,12 +49,12 @@ class FetchProcessor:
     def __init__(
         self,
         fetches: List[FetchRead],
-        sites=SITES,
-        meal_processor: MealProcessor = MealProcessor(),
+        sites: MensaRegistry | None = None,
+        meal_processor: MealProcessor | None = None,
     ):
-        self.sites = sites
+        self.sites = sites if sites is not None else MENSAS
         self.fetches = fetches
-        self.meal_processor = meal_processor
+        self.meal_processor = meal_processor if meal_processor is not None else MealProcessor()
 
     def process_one(
         self,

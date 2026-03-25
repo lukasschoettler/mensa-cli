@@ -8,7 +8,7 @@ from rich.console import Console
 from rich.table import Table
 
 from common.models import Meal
-from common.providers.types import MensaSite
+from common.providers.types import MensaRegistry
 
 
 def create_meal_table(
@@ -60,7 +60,7 @@ def create_meal_table(
     return table
 
 
-def print_list(console: Console, mensen: dict[str, MensaSite]) -> Table:
+def print_list(console: Console, mensen: MensaRegistry) -> Table:
     console.print("\n[bold blue]Available Mensas:[/]")
 
     table = Table(show_header=True, header_style="bold green")
@@ -69,8 +69,8 @@ def print_list(console: Console, mensen: dict[str, MensaSite]) -> Table:
     table.add_column("Mensa")
     table.add_column("URL")
 
-    for key in mensen:
-        columns = [mensen[key].city, mensen[key].key, mensen[key].name, mensen[key].url]
+    for key, site in mensen:
+        columns = [site.city, site.key, site.name, site.url]
         table.add_row(*columns)
 
     return table
