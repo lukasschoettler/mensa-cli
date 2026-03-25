@@ -17,7 +17,7 @@ def setup_logger(name: str = "app", level: int | None = None):
         logger.setLevel(resolved_level)
 
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            "%(asctime)s - %(levelname)s - %(message)s",
             datefmt="%H:%M:%S",
         )
 

@@ -2,17 +2,15 @@
 
 from __future__ import annotations
 
-import logging
 import re
 from typing import List, Optional, Tuple
 
 from bs4 import BeautifulSoup, Tag
 
+from common.logger import log
 from common.models import AllergenInfo, DietaryInfo, Meal, NutritionInfo, Pricing
 from common.providers.stw_berlin import constants
 from common.providers.types import ParseResult
-
-logger = logging.getLogger(__name__)
 
 
 def _get_text(element: Optional[Tag], default: str = "") -> str:
@@ -50,7 +48,7 @@ def _parse_price_string(price_text: str) -> Pricing:
         if len(price_parts) >= 3:
             guest = float(price_parts[2].replace(",", "."))
     except (ValueError, IndexError) as exc:
-        logger.warning("Failed to parse price '%s': %s", price_text, exc)
+        log.warning("Failed to parse price '%s': %s", price_text, exc)
         return Pricing(raw=price_text, is_available=True)
 
     return Pricing(
@@ -132,12 +130,12 @@ def _parse_icons(meal_element: Tag) -> Tuple[NutritionInfo, DietaryInfo]:
 def _parse_meal(meal_element: Tag) -> Optional[Meal]:
     name_element = meal_element.find("span", class_="bold")
     if name_element is None:
-        logger.warning("No name element found in meal")
+        log.warning("No name element found in meal")
         return None
 
     name = _get_text(name_element)
     if not name:
-        logger.warning("Empty meal name found")
+        log.warning("Empty meal name found")
         return None
 
     allergen_codes_raw = _get_attribute(meal_element, "data-kennz", "")
@@ -172,7 +170,7 @@ def parse_menu(html: str) -> ParseResult:
     for group in groups:
         group_name_element = group.find("div", class_="splGroup")
         if group_name_element is None:
-            logger.warning("No category name found in group wrapper")
+            log.warning("No category name found in group wrapper")
             continue
 
         category = _get_text(group_name_element)
