@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import logging
-from typing import Mapping, Optional
+from time import sleep
+from typing import Literal, Mapping, Optional
 from urllib.parse import quote, urlsplit, urlunsplit
 
 import requests
+
+from common.logger import log
 
 logger = logging.getLogger(__name__)
 
@@ -30,31 +33,33 @@ def normalize_url(url: str) -> str:
     return urlunsplit((parts.scheme, parts.netloc, path, query, parts.fragment))
 
 
-def test_connection(
-    timeout: int,
-    headers: Optional[Mapping[str, str]] = DEFAULT_HEADERS,
-    test_url: str = "https://google.com",
-) -> None:
-    try:
-        requests.head(test_url, timeout=timeout, headers=headers)
-        logger.debug(f"Connection Test: Succesfully reached {test_url}")
-    except Exception as e:
-        logger.exception(f"Connection Test failed: {e}")
-    return None
-
-
 def fetch_html(
     url: str,
     *,
     headers: Optional[Mapping[str, str]] = DEFAULT_HEADERS,
     timeout: int = 10,
-) -> str:
+) -> str | None:
     """Fetch HTML content from the given URL using provided session/settings."""
     normalized = normalize_url(url)
 
-    test_connection(timeout, headers)
+    retries = 3
+    i = 1
 
-    logger.debug("Fetching URL %s", normalized)
-    response = requests.get(normalized, timeout=timeout, headers=headers)
-    response.raise_for_status()
-    return response.text
+    while i <= retries:
+        try:
+            log.debug(f"Attempt {i} at fetching URL {normalized}")
+            response = requests.get(normalized, timeout=timeout, headers=headers)
+            response.raise_for_status()
+            log.debug(f"Attempt {i} successful")
+            return response.text
+        except requests.Timeout:
+            log.info(f"Attempt {i} timed out")
+        except Exception as e:
+            log.info(f"Attempt {i} failed to fetch html for {normalized}")
+            log.debug(f"Exception that led to the above error: {e}")
+
+            i += 1
+            sleep(3**i)
+            continue
+
+    log.info(f"Skipping {normalized} after {i} attempts")

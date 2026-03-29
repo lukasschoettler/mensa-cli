@@ -14,12 +14,15 @@ def ingest_fetches(connection: sqlite3.Connection) -> None:
         try:
             html = fetch_html(site.url)
         except Exception as e:
-            log.info(f"Couldn't fetch html for {site.key} at {site.url}: {e}")
+            log.info(
+                f"Unforeseen error: Couldn't fetch html for {site.key} at {site.url}: {e}"
+            )
             continue
 
-        fetch = FetchCreate(html, site.url, site.key)
+        if html:
+            fetch = FetchCreate(html, site.url, site.key)
 
-        try:
-            fetch_repo.insert(fetch)
-        except Exception as e:
-            log.info(f"Failed to insert raw html into database: {e}")
+            try:
+                fetch_repo.insert(fetch)
+            except Exception as e:
+                log.info(f"Failed to insert raw html into database: {e}")
