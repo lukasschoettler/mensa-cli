@@ -9,7 +9,6 @@ ENV PYTHONPATH="/src"
 WORKDIR /src
 COPY ./src/common common
 COPY ./src/data data
-COPY .env .env
 
 
 FROM builder AS debug

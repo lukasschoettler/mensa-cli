@@ -48,7 +48,7 @@ docker build . --target prod -t mensa-data
 docker build . --target debug -t mensa-data-debug
 
 # This mounts the empty "db" directory into the container, which is used for the sqlite3 database. This way the database can be inspected outside of the container
-docker run --mount type=bind,src=./db,dst=/src/db mensa-data
+docker run --env-file .env --mount type=bind,src=./db,dst=/src/db mensa-data
 
-docker run -it --mount type=bind,src=./db,dst=/src/db mensa-data-debug
+docker run ---env-file .env it --mount type=bind,src=./db,dst=/src/db mensa-data-debug
 ```
