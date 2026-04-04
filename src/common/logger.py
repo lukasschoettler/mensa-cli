@@ -1,21 +1,18 @@
 import logging
-import os
 import sys
 
-from dotenv import load_dotenv
-
-load_dotenv()
+from data.config import Config
 
 
-def setup_logger(name: str = "app", level: int | None = None):
+def setup_logger(name: str = "app"):
+
+    config = Config()
+    level = config.log_level
+
     logger = logging.getLogger(name)
 
     if not logger.handlers:
-        env_level = os.getenv("LOG_LEVEL", "INFO").upper()
-        resolved_level = level or getattr(logging, env_level, logging.INFO)
-
-        logger.setLevel(resolved_level)
-
+        logger.setLevel(level)
         formatter = logging.Formatter(
             "%(asctime)s - %(levelname)s - %(message)s",
             datefmt="%H:%M:%S",

@@ -50,5 +50,11 @@ docker build . --target debug -t mensa-data-debug
 # This mounts the empty "db" directory into the container, which is used for the sqlite3 database. This way the database can be inspected outside of the container
 docker run --env-file .env --mount type=bind,src=./db,dst=/src/db mensa-data
 
-docker run ---env-file .env it --mount type=bind,src=./db,dst=/src/db mensa-data-debug
+docker run --env-file .env -it --mount type=bind,src=./db,dst=/src/db mensa-data-debug
 ```
+
+## Environment Variables
+
+LOG_LEVEL: An Integer from 0 to 5 or one of DEBUG, INFO, WARNING, ERROR, and CRITICAL
+CRAWL: TRUE or FALSE, to enable or disable the web crawling. Only traverses the database and parses already fetched sites if FALSE.
+DB_NAME: Name of the sqlite3 database that is used. Gets created if it doensn't exist. Required.

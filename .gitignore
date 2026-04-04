@@ -15,6 +15,9 @@ env/
 
 # Data
 /db/*
+*.db
+
+/scripts/
 
 # Editor
 *.vim

@@ -1,8 +1,10 @@
+import os
 import sqlite3
 
 from common.logger import log
-from common.models import MensaCreate
+from common.models import MealCreate, MensaCreate
 from common.providers import MENSAS
+from data.config import Config
 from data.ingest import ingest_fetches
 from data.processing import FetchProcessor
 from data.queries import (
@@ -13,8 +15,10 @@ from data.queries import (
 )
 from data.schema import DatabaseSchema
 
+config = Config()
+
 try:
-    connection = sqlite3.connect("db/mensa.db")
+    connection = sqlite3.connect(f"db/{config.db_name}.db")
 except Exception as e:
     e.add_note("Hint: Is the database mounted correctly?")
     raise e
@@ -36,7 +40,10 @@ for key, site in MENSAS:
         )
     )
 
-ingest_fetches(connection)
+if config.crawl == "FALSE":
+    pass
+else:
+    ingest_fetches(connection)
 
 fetch_repo = FetchRepository(connection)
 
@@ -57,6 +64,16 @@ else:
             menu_after = menu_repo.insert(result[0])
             for meal in result[1]:
                 meal_after = meal_repo.upsert(meal)
-                menu_repo.insert_meal_junction(menu_after.id, meal_after.id)
+                menu_repo.insert_meal_junction(
+                    menu_after.id,
+                    meal_after.id,
+                    MealCreate(
+                        meal.name,
+                        meal.mensa_key,
+                        meal.price_student,
+                        meal.price_employee,
+                        meal.price_guest,
+                    ),
+                )
 
 connection.commit()
