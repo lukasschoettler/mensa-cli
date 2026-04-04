@@ -3,7 +3,7 @@ from typing import List, Tuple, TypedDict
 from common.logger import log
 from common.models import FetchRead, MealCreate, MenuCreate
 from common.providers import MENSAS
-from common.providers.types import MensaRegistry, MensaSite, ParseResult
+from common.providers.types import MensaRegistry, ParseResult
 
 
 class StructuredFetch(TypedDict):
@@ -41,7 +41,15 @@ class MealProcessor:
         meal_list = []
         menu = parse_menu(self.sites, fetch)
         for meal in menu.meals:
-            meal_list.append(MealCreate(meal.name, fetch.mensa_key))
+            meal_list.append(
+                MealCreate(
+                    meal.name,
+                    fetch.mensa_key,
+                    meal.pricing.student,
+                    meal.pricing.employee,
+                    meal.pricing.guest,
+                )
+            )
         return meal_list
 
 
@@ -54,7 +62,9 @@ class FetchProcessor:
     ):
         self.sites = sites if sites is not None else MENSAS
         self.fetches = fetches
-        self.meal_processor = meal_processor if meal_processor is not None else MealProcessor()
+        self.meal_processor = (
+            meal_processor if meal_processor is not None else MealProcessor()
+        )
 
     def process_one(
         self,

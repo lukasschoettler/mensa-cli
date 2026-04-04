@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, Optional, Set
+from typing import List, Optional
 
 # from common.providers import SITES
 
@@ -116,6 +116,9 @@ class MenuRead(BaseRead):
 class MealCreate:
     name: str
     mensa_key: str
+    price_student: float | None
+    price_employee: float | None
+    price_guest: float | None
 
 
 @dataclass

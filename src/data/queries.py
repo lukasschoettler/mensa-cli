@@ -110,16 +110,33 @@ VALUES
         )
         return return_val
 
-    def insert_meal_junction(self, menu_id: int, meal_id: int) -> None:
+    def insert_meal_junction(
+        self,
+        menu_id: int,
+        meal_id: int,
+        meal: MealCreate,
+    ) -> None:
         with self.conn as conn:
             conn.execute(
                 """/*SQL*/
 INSERT INTO
-  menus_meals (menu_id, meal_id)
+  menus_meals (
+    menu_id,
+    meal_id,
+    price_student,
+    price_employee,
+    price_guest
+  )
 VALUES
-  (?, ?)
+  (?, ?, ?, ?, ?)
                        """,
-                (menu_id, meal_id),
+                (
+                    menu_id,
+                    meal_id,
+                    meal.price_student,
+                    meal.price_employee,
+                    meal.price_guest,
+                ),
             )
 
         log.debug(f"Inserted menu meal junction for menu {menu_id} and meal {meal_id}")
