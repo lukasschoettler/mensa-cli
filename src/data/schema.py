@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS mensas (
   provider TEXT NOT NULL,
   url TEXT NOT NULL,
   city TEXT NOT NULL
-)""")
+);
+        """)
 
     def ensure_table_fetches(self) -> None:
         self.conn.execute("""/*SQL*/
@@ -23,7 +24,7 @@ CREATE TABLE IF NOT EXISTS fetches (
   timestamp DATETIME NOT NULL,
   url TEXT NOT NULL,
   mensa_key TEXT NOT NULL
-)
+);
         """)
 
     def ensure_table_menus(self) -> None:
@@ -35,8 +36,8 @@ CREATE TABLE IF NOT EXISTS menus (
   mensa_key TEXT NOT NULL,
   FOREIGN KEY (fetch_id) REFERENCES fetches (id),
   FOREIGN KEY (mensa_key) REFERENCES mensas (key)
-)
-      """)
+);
+        """)
 
     def ensure_table_meals(self) -> None:
         self.conn.execute("""/*SQL*/
@@ -45,12 +46,11 @@ CREATE TABLE IF NOT EXISTS meals (
   timestamp TEXT NOT NULL,
   name TEXT NOT NULL,
   mensa_key TEXT NOT NULL,
-  description TEXT,
   vegetarian INTEGER,
   vegan INTEGER,
   FOREIGN KEY (mensa_key) REFERENCES mensas (key),
-  UNIQUE (name, mensa_key)
-)
+  UNIQUE (name, mensa_key, vegetarian, vegan)
+);
         """)
 
     def ensure_table_menus_meals(self) -> None:
@@ -64,7 +64,8 @@ CREATE TABLE IF NOT EXISTS menus_meals (
   PRIMARY KEY (menu_id, meal_id),
   FOREIGN KEY (menu_id) REFERENCES menus (id),
   FOREIGN KEY (meal_id) REFERENCES meals (id)
-)""")
+);
+        """)
 
     def ensure_all(self) -> None:
         self.conn.execute("PRAGMA foreign_keys = ON;")

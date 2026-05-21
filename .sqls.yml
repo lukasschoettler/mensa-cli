@@ -1,0 +1,4 @@
+connections:
+  - alias: dsn_mysql
+  - driver: sqlite3
+  - dataSourceName: db/mensa.db

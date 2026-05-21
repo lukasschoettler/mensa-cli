@@ -45,6 +45,8 @@ class MealProcessor:
                 MealCreate(
                     meal.name,
                     fetch.mensa_key,
+                    meal.dietary.vegetarian,
+                    meal.dietary.vegan,
                     meal.pricing.student,
                     meal.pricing.employee,
                     meal.pricing.guest,

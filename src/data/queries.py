@@ -118,15 +118,14 @@ VALUES
     ) -> None:
         with self.conn as conn:
             conn.execute(
-                """/*SQL*/
-INSERT INTO
-  menus_meals (
-    menu_id,
-    meal_id,
-    price_student,
-    price_employee,
-    price_guest
-  )
+                """/*SQL*/ INSERT
+OR IGNORE INTO menus_meals (
+  menu_id,
+  meal_id,
+  price_student,
+  price_employee,
+  price_guest
+)
 VALUES
   (?, ?, ?, ?, ?)
                        """,

@@ -1,4 +1,3 @@
-import os
 import sqlite3
 
 from common.logger import log
@@ -62,18 +61,31 @@ else:
             meal_repo = MealRepository(conn)
 
             menu_after = menu_repo.insert(result[0])
+            assert (
+                type(menu_after.id) == int
+            ), "Database didn't return an id for the inserted Menu"
             for meal in result[1]:
                 meal_after = meal_repo.upsert(meal)
-                menu_repo.insert_meal_junction(
-                    menu_after.id,
-                    meal_after.id,
-                    MealCreate(
-                        meal.name,
-                        meal.mensa_key,
-                        meal.price_student,
-                        meal.price_employee,
-                        meal.price_guest,
-                    ),
-                )
+                assert (
+                    type(meal_after.id) == int
+                ), "Database didn't return an id for the inserted Meal"
+                try:
+                    menu_repo.insert_meal_junction(
+                        menu_after.id,
+                        meal_after.id,
+                        MealCreate(
+                            meal.name,
+                            meal.mensa_key,
+                            None,
+                            None,
+                            meal.price_student,
+                            meal.price_employee,
+                            meal.price_guest,
+                        ),
+                    )
+                except Exception as e:
+                    log.warning(
+                        f"The following exception occured whily trying to insert junction for meal {meal_after.id} and menu {menu_after.id}: {e}"
+                    )
 
 connection.commit()

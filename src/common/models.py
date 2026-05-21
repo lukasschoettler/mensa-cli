@@ -116,6 +116,8 @@ class MenuRead(BaseRead):
 class MealCreate:
     name: str
     mensa_key: str
+    vegetarian: bool | None
+    vegan: bool | None
     price_student: float | None
     price_employee: float | None
     price_guest: float | None
@@ -125,3 +127,5 @@ class MealCreate:
 class MealRead(BaseRead):
     name: str
     mensa_key: str
+    vegetarian: bool | None
+    vegan: bool | None
