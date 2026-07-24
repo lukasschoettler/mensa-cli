@@ -17,7 +17,11 @@ env/
 /db/*
 *.db
 
+# scripts
 /scripts/
 
 # Editor
 *.vim
+
+# Test fixtures
+tests/**/fixtures/*
