@@ -22,3 +22,6 @@ db
 
 # Scripts
 /scripts/
+
+# Tests
+/tests/
