@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 from time import sleep
-from typing import Literal, Mapping, Optional
+from typing import Mapping, Optional
 from urllib.parse import quote, urlsplit, urlunsplit
 
 import requests
