@@ -100,3 +100,30 @@ FROM menus;
     menus_second_process =  cursor.fetchone()[0]
 
     assert menus_first_process == menus_second_process
+
+
+def test_fetch_deduplication():
+    """
+    test, whether repeated ingestion of identical fetches leads to duplicated fetches
+    """
+    connection = sqlite3.connect(":memory:")
+    setup_mock_db(connection)
+
+    ingest_fetches(connection, mock_fetcher)
+
+    cursor = connection.cursor()
+    cursor.execute("""/*SQL*/
+SELECT COUNT(*)
+FROM fetches;
+                       """)
+    fetches_first_ingestion =  cursor.fetchone()[0]
+
+    ingest_fetches(connection, mock_fetcher)
+
+    cursor.execute("""/*SQL*/
+SELECT COUNT(*)
+FROM fetches;
+                       """)
+    fetches_second_ingestion =  cursor.fetchone()[0]
+
+    assert fetches_first_ingestion == fetches_second_ingestion
