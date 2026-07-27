@@ -34,5 +34,13 @@ RUN useradd --create-home --shell /bin/bash appuser
 
 USER appuser
 
-
 ENTRYPOINT ["python", "data/main.py"]
+
+
+FROM prod AS test
+
+COPY ./tests/ tests
+
+RUN ["pip", "install", "pytest"]
+
+ENTRYPOINT ["python", "-m", "pytest", "-p", "no:cacheprovider"]
