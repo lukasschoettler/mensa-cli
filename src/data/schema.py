@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS meals (
   timestamp TEXT NOT NULL,
   name TEXT NOT NULL,
   mensa_key TEXT NOT NULL,
-  vegetarian INTEGER,
-  vegan INTEGER,
+  vegetarian INTEGER NOT NULL DEFAULT -1,
+  vegan INTEGER NOT NULL DEFAULT -1,
   FOREIGN KEY (mensa_key) REFERENCES mensas (key),
   UNIQUE (name, mensa_key, vegetarian, vegan)
 );
